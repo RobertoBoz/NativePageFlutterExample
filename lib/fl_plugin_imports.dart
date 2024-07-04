@@ -41,8 +41,7 @@ class NativePage extends StatelessWidget {
       case TargetPlatform.iOS:
       
         return UiKitView(
-          viewType: viewType,
-          layoutDirection: TextDirection.ltr,
+          viewType: viewType,          
           creationParams: creationParams,
           creationParamsCodec: const StandardMessageCodec(),          
         );

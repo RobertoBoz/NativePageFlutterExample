@@ -61,9 +61,9 @@ class FLNativeView: NSObject, FlutterPlatformView {
         nativeLabel.frame = CGRect(x: 0, y: 0, width: 180, height: 48.0)
         _view.addSubview(nativeLabel)
         let button = UIButton()
-            button.frame = CGRect(x: 0, y: 0, width: 50, height: 100)
+            button.frame = CGRect(x: 50, y: 100, width: 100, height: 100)
             button.backgroundColor = UIColor.red
-            button.setTitle("Name your Button ", for: .normal)
+            button.setTitle("+", for: .normal)
             button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
 
         _view.addSubview(nativeLabel)

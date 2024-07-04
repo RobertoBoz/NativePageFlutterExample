@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pchostinnativepage/after_first_layout_mixin.dart';
 import 'package:pchostinnativepage/fl_plugin_imports.dart';
 
 void main() {
@@ -41,23 +44,24 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with AfterFirstLayoutMixin<MyHomePage> {
   int _counter = 0;
+ late StreamSubscription<dynamic> _streamSubscription;
 
-  @override
-  void initState() {
-    
-    super.initState();
-  }
+
 
   void _handleCityChanges() {
    final eventChannel = EventChannel('channel/counter');
-    eventChannel.receiveBroadcastStream().listen((data) {
-    setState(() {
-      _counter = _counter + data as int;
-    });
-});
+     _streamSubscription = eventChannel.receiveBroadcastStream().listen(
+      (data) {
+        setState(() {
+          _counter = _counter + data as int;
+        });
+      });
+  
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,21 +74,54 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: 200, 
-            width: 400, color: Colors.red, child: Container( child: NativePage(),
-          width: 100, height: 100, color: Colors.cyan,)),
+          
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: 
+            [
+              Container(
+                height: 300,
+                width: 300,
+                child: NativePage()
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
           Text( '$_counter', style: Theme.of(context).textTheme.headlineMedium,),
+          MaterialButton(
+            color: Colors.amber,
+            onPressed: (){_streamSubscription.cancel();}, 
+            child: Text('Cancelar stream'),
+          ),
+
+          MaterialButton(
+            color: Colors.amber,
+            onPressed: _handleCityChanges, 
+            child: Text('Iniciar stream'),
+          )
+
         ],
         
       ),
       
+      
       floatingActionButton: FloatingActionButton(
-        onPressed: _handleCityChanges,
+        onPressed: (){
+          setState(() {
+            _counter++;
+          });
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  FutureOr<void> onAfterFirstLayout() {
+    _handleCityChanges();
   }
 }
