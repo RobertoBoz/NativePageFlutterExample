@@ -9,12 +9,12 @@ import UIKit
     ) -> Bool {
        GeneratedPluginRegistrant.register(with: self)
         
-        weak var registrar = self.registrar(forPlugin: "plugin-name")
+        weak var registrar = self.registrar(forPlugin: "plugin-rf")
         
         let factory = FLNativeViewFactory(messenger: registrar!.messenger())
-        self.registrar(forPlugin: "<plugin-name>")!.register(
+        self.registrar(forPlugin: "<plugin-rf>")!.register(
             factory,
-            withId: "<platform-view-type>")
+            withId: "<platform-view-rf>")
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }

@@ -30,7 +30,7 @@ class FLNativeViewFactory: NSObject, FlutterPlatformViewFactory {
 class FLNativeView: NSObject, FlutterPlatformView {
     private var _view: UIView
     private var eventChannel: FlutterEventChannel 
-    private var counterHandler: CounterHandler
+    private var rfHandler: RfHandler
 
     init(
         frame: CGRect,
@@ -39,9 +39,9 @@ class FLNativeView: NSObject, FlutterPlatformView {
         binaryMessenger messenger: FlutterBinaryMessenger?
     ) {
         _view = UIView()
-       eventChannel  = FlutterEventChannel(name: "channel/counter", binaryMessenger: messenger!) // timeHandlerEvent is event name
-       counterHandler = CounterHandler()
-       eventChannel.setStreamHandler(counterHandler)
+       eventChannel  = FlutterEventChannel(name: "channel/rf", binaryMessenger: messenger!) // timeHandlerEvent is event name
+       rfHandler = RfHandler()
+       eventChannel.setStreamHandler(rfHandler)
 
         super.init()
 
@@ -75,11 +75,11 @@ class FLNativeView: NSObject, FlutterPlatformView {
         
         
         
-        counterHandler.sendData(data: 1) 
+        rfHandler.sendData(data: 1) 
     }
 
 
-    class CounterHandler: NSObject, FlutterStreamHandler {
+    class RfHandler: NSObject, FlutterStreamHandler {
         // Handle events on the main thread.                
        private var eventSink: FlutterEventSink?
     

@@ -9,7 +9,7 @@ class NativePage extends StatelessWidget {
   
   NativePage({super.key});
 
-  final viewType = '<platform-view-type>';
+  final viewType = '<platform-view-rf>';
   final Map<String, dynamic> creationParams = <String, dynamic>{
   };
 
@@ -27,15 +27,19 @@ class NativePage extends StatelessWidget {
               hitTestBehavior: PlatformViewHitTestBehavior.opaque,
             );
           }, 
-          onCreatePlatformView: (PlatformViewCreationParams params) {
-            return PlatformViewsService.initSurfaceAndroidView(
-              id: params.id,
-              viewType: viewType,
-              layoutDirection: TextDirection.ltr,
-              creationParams: creationParams,
-              creationParamsCodec: const StandardMessageCodec(),
-            );
-          }, 
+          onCreatePlatformView: (params) {
+      return PlatformViewsService.initSurfaceAndroidView(
+        id: params.id,
+        viewType: viewType,
+        layoutDirection: TextDirection.ltr,
+        creationParams: creationParams,
+        creationParamsCodec: const StandardMessageCodec(),
+        onFocus: () {
+          params.onFocusChanged(true);
+        },
+      )
+        ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+        ..create();}, 
           viewType: viewType
       );
       case TargetPlatform.iOS:
