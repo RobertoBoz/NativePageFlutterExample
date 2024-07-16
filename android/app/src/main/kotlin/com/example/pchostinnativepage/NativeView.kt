@@ -25,7 +25,10 @@ internal class NativeView(context: Context, id: Int, creationParams: Map<String?
     }
 
 
-    override fun dispose() {}
+    override fun dispose() {
+        eventChannel.setStreamHandler(null)
+        println("[Android]: dispose_view and disponse the event channel")
+    }
 
     init {
         
@@ -65,10 +68,12 @@ internal class NativeView(context: Context, id: Int, creationParams: Map<String?
         private var eventSink: EventSink? = null
 
         override fun onListen(arguments: Any?, eventSink: EventSink) {
+            println("[Android]: onListen_view")
             this.eventSink = eventSink
         }
 
         override fun onCancel(arguments: Any?){
+            println("[Android]: onCancel_view")
             eventSink?.endOfStream()
             eventSink = null
         }

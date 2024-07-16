@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pchostinnativepage/after_first_layout_mixin.dart';
 import 'package:pchostinnativepage/fl_plugin_imports.dart';
+import 'package:pchostinnativepage/second_pantalla.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      routes:  {
+        '1': (context ) => const MyHomePage(title: '',),
+        '2': (context ) => const SecondPantalla()
+      },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -53,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> with AfterFirstLayoutMixin<MyHo
 
   void _handleCityChanges() {
   
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
        _streamSubscription =  const EventChannel('channel/rf').receiveBroadcastStream().listen(
       (data) {
         setState(() {
@@ -62,10 +67,12 @@ class _MyHomePageState extends State<MyHomePage> with AfterFirstLayoutMixin<MyHo
       });
       
     });
-   
-    
   
-  
+  }
+
+  @override
+  void dispose() {    
+    super.dispose();
   }
 
 
@@ -109,6 +116,17 @@ class _MyHomePageState extends State<MyHomePage> with AfterFirstLayoutMixin<MyHo
             color: Colors.amber,
             onPressed: _handleCityChanges, 
             child: Text('Iniciar stream'),
+          ),
+           MaterialButton(
+            color: Colors.amber,
+            onPressed: (){
+              Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '2',
+                              (Route<dynamic> route) => false,
+                            );
+            }, 
+            child: Text('Cambiar de pantalla'),
           )
 
         ],

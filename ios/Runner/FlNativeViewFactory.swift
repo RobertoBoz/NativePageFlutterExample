@@ -48,6 +48,12 @@ class FLNativeView: NSObject, FlutterPlatformView {
         createNativeView(view: _view)
     }
 
+    func dispose() {                
+        _view.subviews.forEach { $0.removeFromSuperview() }
+        eventChannel.setStreamHandler(nil)
+        print("[IOS]: dispose_view and disponse the event channel")
+    }
+
     func view() -> UIView {
         return _view
     }
@@ -84,12 +90,14 @@ class FLNativeView: NSObject, FlutterPlatformView {
        private var eventSink: FlutterEventSink?
     
         func onListen(withArguments arguments: Any?, eventSink: @escaping FlutterEventSink) -> FlutterError? {
+            print("[IOS] onListen_view")
             self.eventSink = eventSink
             return nil
         }
         
         func onCancel(withArguments arguments: Any?) -> FlutterError? {
             eventSink = nil
+            print("[IOS] onCancel_view")
             return nil
         }
         
