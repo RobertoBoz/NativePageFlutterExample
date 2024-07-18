@@ -68,6 +68,7 @@ internal class NativeView(context: Context, id: Int, creationParams: Map<String?
         private var eventSink: EventSink? = null
 
         override fun onListen(arguments: Any?, eventSink: EventSink) {
+            println("[Android]: ${arguments.toString()} onListen_view")
             println("[Android]: onListen_view")
             this.eventSink = eventSink
         }

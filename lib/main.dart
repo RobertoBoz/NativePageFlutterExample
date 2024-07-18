@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +59,9 @@ class _MyHomePageState extends State<MyHomePage> with AfterFirstLayoutMixin<MyHo
   void _handleCityChanges() {
   
     Future.delayed(const Duration(seconds: 1), () {
-       _streamSubscription =  const EventChannel('channel/rf').receiveBroadcastStream().listen(
+
+      
+       _streamSubscription =  const EventChannel('channel/rf').receiveBroadcastStream('channel/rf').listen(
       (data) {
         setState(() {
           _counter = _counter + data as int;
@@ -100,7 +102,12 @@ class _MyHomePageState extends State<MyHomePage> with AfterFirstLayoutMixin<MyHo
                 height: 300,
                 width: 300,
                 color: Colors.amber,
-                child: NativePage()
+                child: Stack(
+                  children: [
+                    NativePage(),
+                    Container(color: Colors.white.withOpacity( 0.5), height: 300,),
+                  ],
+                )
               ),
             ],
           ),
